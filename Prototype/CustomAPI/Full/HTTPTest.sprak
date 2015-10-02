@@ -1,0 +1,20 @@
+﻿
+ClearText()
+number request = HTTPConnect("http://httpbin.org/xml")
+Print("Connection token: "+request)
+loop
+    bool isDone = HTTPIsReady(request)
+    if isDone == true
+        ReadStream(request)
+        break
+    end
+    Sleep(1)
+end
+
+void ReadStream(number req)
+    number count = HTTPCount(req)
+    loop a from 0 to count
+       string line = HTTPDemux(req, a)
+       Print(line) 
+    end
+end
