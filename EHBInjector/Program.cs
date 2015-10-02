@@ -1,4 +1,5 @@
 ﻿using EHBInjector.Injectors.API;
+using EHBInjector.Injectors.API.Appenders;
 using EHBInjector.Injectors.Relay;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -105,6 +106,10 @@ namespace EHBInjector
 
             var injectCellHasExternalHTTPAPI = new InjectBoolEntry(target.MainModule.GetType("GameWorld2", "Computer"), "hasExternalHTTPAPI");
             injectCellHasExternalHTTPAPI.Execute(relay.MainModule);
+
+            MethodDefinition appendApiToComputerSelectorExternalHTTP = proto.MainModule.GetType("Prototype.CustomAPI.Full", "ExternalHTTPAPI").Methods.First(o=>o.Name=="AssembleDefinitions");
+            AppendAPIToComputerSelector selectorExternalHTTPAPI = new AppendAPIToComputerSelector(target.MainModule.GetType("GameWorld2", "Computer"), injectCellHasExternalHTTPAPI.AccessorGet, appendApiToComputerSelectorExternalHTTP);
+            selectorExternalHTTPAPI.Execute();
 
             Console.WriteLine("Writing new version...");
 

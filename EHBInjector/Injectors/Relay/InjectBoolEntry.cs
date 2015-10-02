@@ -15,6 +15,8 @@ namespace EHBInjector.Injectors.Relay
 
         protected string _tokenName;
 
+        public MethodReference AccessorGet { get; protected set; }
+
         public InjectBoolEntry(TypeDefinition target, string tokenName)
         {
             _target = target;
@@ -110,6 +112,9 @@ namespace EHBInjector.Injectors.Relay
             _target.Methods.Add(accessorDef.GetMethod);
             _target.Methods.Add(accessorDef.SetMethod);
             _target.Properties.Add(accessorDef);
+
+            AccessorGet = accessorDef.GetMethod;
+
         }
 
     }

@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Injectors\API\Appenders\AppendAPIToComputerSelector.cs" />
     <Compile Include="Injectors\API\InjectScrewdriverAPI.cs" />
     <Compile Include="Injectors\API\InjectSprakAPI.cs" />
     <Compile Include="Injectors\Relay\InjectBoolEntry.cs" />
