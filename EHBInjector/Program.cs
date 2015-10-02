@@ -16,7 +16,7 @@ namespace EHBInjector
             string targetPath = @"_GameWorld2.dll";
             string newPath = @"GameWorld2.dll";
 
-            Console.WriteLine("EHB Injector Version 1.0 by Itaros");
+            Console.WriteLine("EHB Injector Version 1.0a by Itaros");
 
             if (args.Where(o => o == "-uninstall").Count() != 0)
             {
@@ -36,8 +36,6 @@ namespace EHBInjector
             AssemblyDefinition proto = AssemblyDefinition.ReadAssembly(@"Prototype.dll");
             TypeDefinition protoDefinition = proto.MainModule.GetType("Prototype", "Override");
 
-            MethodDefinition addConnectionAPI = protoDefinition.Methods.First(o => o.Name == "AddAPIConnection");
-
             //Loading sprak!
             Console.WriteLine("Loading definition of ProgrammingLanguageNr1.dll(Sprak runtime)");
             AssemblyDefinition sprak = AssemblyDefinition.ReadAssembly(@"ProgrammingLanguageNr1.dll");
@@ -50,8 +48,6 @@ namespace EHBInjector
             TypeDefinition targetDefinition = target.MainModule.GetType("GameWorld2", "Hackdev");
             MethodDefinition targetMethod = targetDefinition.Methods.First(o => o.Name == "get_masterProgram");
             targetMethod.Body.Variables.Add(new VariableDefinition(target.MainModule.TypeSystem.Object));
-
-            MethodReference addConnectionAPIRemote = targetMethod.Module.Import(addConnectionAPI);
 
             //Getting _tingRunner accessor
             Instruction ldfldToTingrunner = target.MainModule.GetType("GameWorld2", "Radio").Methods.First(o => o.Name == "get_masterProgram").Body.Instructions.Where(o=>o.OpCode==OpCodes.Ldfld).ElementAt(1);
@@ -80,18 +76,6 @@ namespace EHBInjector
             }
 
             //Pushing calls
-
-            //ilproc.InsertBefore(defset, getNewTingRunner);
-
-            ilproc.InsertBefore(defset, Instruction.Create(OpCodes.Stloc_0));//StoreList
-
-            ilproc.InsertBefore(defset, Instruction.Create(OpCodes.Ldarg_0));
-            ilproc.InsertBefore(defset, Instruction.Create(OpCodes.Ldloc_0));
-
-            ilproc.InsertBefore(defset, Instruction.Create(OpCodes.Ldarg_0));
-            ilproc.InsertBefore(defset, getNewTingRunner);
-            //MimanTing ting, TingTing.TingRunner runner, List<FunctionDefinition> list
-            ilproc.InsertBefore(defset, Instruction.Create(OpCodes.Call, addConnectionAPIRemote));
 
             var screwdriverAPIExtended = new InjectScrewdriverAPI(proto.MainModule.GetType("Prototype.CustomAPI.Injected", "ScrewdriverInjectoid"), target.MainModule.GetType("GameWorld2", "Screwdriver"));
             screwdriverAPIExtended.Sprak = sprak.MainModule;
