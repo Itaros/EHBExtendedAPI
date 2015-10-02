@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Injectors\API\InjectScrewdriverAPI.cs" />
     <Compile Include="Injectors\API\InjectSprakAPI.cs" />
+    <Compile Include="Injectors\Relay\InjectBoolEntry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

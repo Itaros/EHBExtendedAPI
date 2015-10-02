@@ -1,4 +1,5 @@
 ﻿using EHBInjector.Injectors.API;
+using EHBInjector.Injectors.Relay;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using System;
@@ -42,6 +43,11 @@ namespace EHBInjector
             Console.WriteLine("Loading definition of ProgrammingLanguageNr1.dll(Sprak runtime)");
             AssemblyDefinition sprak = AssemblyDefinition.ReadAssembly(@"ProgrammingLanguageNr1.dll");
             
+            //Loading Relay!
+            Console.WriteLine("Loading definition of Relay.dll(Database)");
+            AssemblyDefinition relay = AssemblyDefinition.ReadAssembly(@"Relay.dll");
+            
+
             //Getting target
             Console.WriteLine("Loading definition of GameWorld2.dll(Game core)");
             AssemblyDefinition target = AssemblyDefinition.ReadAssembly(targetPath);
@@ -96,6 +102,9 @@ namespace EHBInjector
             var screwdriverAPIExtended = new InjectScrewdriverAPI(proto.MainModule.GetType("Prototype.CustomAPI.Injected", "ScrewdriverInjectoid"), target.MainModule.GetType("GameWorld2", "Screwdriver"));
             screwdriverAPIExtended.Sprak = sprak.MainModule;
             screwdriverAPIExtended.Execute();
+
+            var injectCellHasExternalHTTPAPI = new InjectBoolEntry(target.MainModule.GetType("GameWorld2", "Computer"), "hasExternalHTTPAPI");
+            injectCellHasExternalHTTPAPI.Execute(relay.MainModule);
 
             Console.WriteLine("Writing new version...");
 

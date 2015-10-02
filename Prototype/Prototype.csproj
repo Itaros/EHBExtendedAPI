@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAPI\Full\ExternalHTTPAPI.cs" />
     <Compile Include="CustomAPI\Injected\ScrewdriverInjectoid.cs" />
     <Compile Include="GetMasterProgramHackdevOverride.cs" />
     <Compile Include="Override.cs" />
